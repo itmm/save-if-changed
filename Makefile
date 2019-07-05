@@ -17,7 +17,7 @@ tests: sic
 	@diff a.out tsts/c.txt
 	@echo TST not modified
 	@ls -al tsts >ls-1.txt
-	@cd tsts; cat a.txt | ../sic; true
+	@cat tsts/a.txt | ./sic tst/a.out; true
 	@ls -al tsts >ls-2.txt
 	@diff ls-1.txt ls-2.txt
 	@rm ls-1.txt ls-2.txt

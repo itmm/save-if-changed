@@ -129,10 +129,11 @@
 	{
 		std::fstream out {
 			path.c_str(),
-				p ?
-			std::ios_base::binary |
-				std::ios_base::in |
-				std::ios_base::out:
+			p ?
+				std::ios_base::binary |
+					std::ios_base::in |
+					std::ios_base::out
+			:
 				std::ios_base::binary |
 					std::ios_base::out
 		};
@@ -141,6 +142,9 @@
 @end(algorithm)
 ```
 * Open output and write changed part
+* File will not be created when `std::ios_base::in` is specified
+* So it will be specified only if there is some data to sweep over
+* Otherwise it will be replaced with zeros
 
 ```
 @def(write)
@@ -181,4 +185,41 @@
 @end(algorithm)
 ```
 * Return success
+
+## Parse arguments
+
+```
+@def(parse arguments)
+	bool parse_opts { true };
+	for (int i = 1; i < argc; ++i) {
+		std::string arg { argv[i] };
+		if (parse_opts && arg[0] == '-') {
+			@put(parse option)
+		} else {
+			path = arg;
+		}
+	}
+@end(parse arguments)
+```
+
+```
+@def(parse option)
+	if (arg == "--") {
+		parse_opts = false;
+		continue;
+	}
+	if (arg != "-?" && arg != "--help") {
+		std::cerr << "unknown option " <<
+			arg << "\n";
+	}
+	@put(write description)
+@end(parse option)
+```
+
+```
+@def(write description)
+	std::cout << "usage: " << argv[0] <<
+		" [-?|--help|--] file_name\n";
+@end(write description)
+```
 

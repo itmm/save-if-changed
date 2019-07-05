@@ -200,10 +200,11 @@ If both files are done then the file do not need to change
 <span class="in1"></span>{<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">fstream</span> <span class="var">out</span> {<br/>
 <span class="in3"></span><span class="var">path</span>.<span class="fn">c_str</span>(),<br/>
-<span class="in4"></span><span class="var">p</span> ?<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span> |<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="keyword">in</span> |<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">out</span>:<br/>
+<span class="in3"></span><span class="var">p</span> ?<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span> |<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="keyword">in</span> |<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">out</span><br/>
+<span class="in3"></span>:<br/>
 <span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span> |<br/>
 <span class="in5"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">out</span><br/>
 <span class="in2"></span>};<br/>
@@ -213,6 +214,12 @@ If both files are done then the file do not need to change
 </code></div>
 <ul><li>
 Open output and write changed part
+</li><li>
+File will not be created when <code><span class="type">std</span>::<span class="var">ios_base</span>::<span class="keyword">in</span></code> is specified
+</li><li>
+So it will be specified only if there is some data to sweep over
+</li><li>
+Otherwise it will be replaced with zeros
 </li></ul>
 </div>
 <div><div>
@@ -269,6 +276,52 @@ Truncate file to new length
 <ul><li>
 Return success
 </li></ul>
+</div>
+</div>
+<h2>Parse arguments</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Parse arguments</h2>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">parse arguments</span>)</span><br/>
+<span class="in1"></span><span class="type">bool</span> <span class="var">parse_opts</span> { <span class="num">true</span> };<br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">1</span>; <span class="var">i</span> &lt; <span class="var">argc</span>; ++<span class="var">i</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">arg</span> { <span class="var">argv</span>[<span class="var">i</span>] };<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">parse_opts</span> &amp;&amp; <span class="var">arg</span>[<span class="num">0</span>] == <span class="str">'-'</span>) {<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">parse option</span>)</span><br/>
+<span class="in2"></span>} <span class="keyword">else</span> {<br/>
+<span class="in3"></span><span class="var">path</span> = <span class="var">arg</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">parse arguments</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">parse option</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">arg</span> == <span class="str">"--"</span>) {<br/>
+<span class="in2"></span><span class="var">parse_opts</span> = <span class="num">false</span>;<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">arg</span> != <span class="str">"-?"</span> &amp;&amp; <span class="var">arg</span> != <span class="str">"--help"</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"unknown option "</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="var">arg</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">write description</span>)</span><br/>
+<span class="macro">@end(<span class="name">parse option</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">write description</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"usage: "</span> &lt;&lt; <span class="var">argv</span>[<span class="num">0</span>] &lt;&lt;<br/>
+<span class="in2"></span><span class="str">" [-?|--help|--] file_name\n"</span>;<br/>
+<span class="macro">@end(<span class="name">write description</span>)</span><br/>
+</code></div>
 </div>
 </body>
 </html>
