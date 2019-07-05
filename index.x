@@ -129,9 +129,12 @@
 	{
 		std::fstream out {
 			path.c_str(),
+				p ?
 			std::ios_base::binary |
 				std::ios_base::in |
-				std::ios_base::out
+				std::ios_base::out:
+				std::ios_base::binary |
+					std::ios_base::out
 		};
 		@put(write);
 	}
