@@ -49,7 +49,7 @@ The file consists of global elements
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">needed by main</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="type">string</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">&lt;string&gt;</span><br/>
 <span class="macro">@end(<span class="name">needed by main</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -130,7 +130,7 @@ Perform algorithm after command line arguments are parsed
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">needed by algorithm</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">fstream</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">&lt;fstream&gt;</span><br/>
 <span class="macro">@end(<span class="name">needed by algorithm</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -141,9 +141,9 @@ Needs file stream
 <code>
 <span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
 <span class="in1"></span>{<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="keyword">in</span> {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="var">in</span> {<br/>
 <span class="in3"></span><span class="var">path</span>.<span class="fn">c_str</span>(),<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span><br/>
+<span class="in3"></span><span class="type">std</span>::<span class="type">ios_base</span>::<span class="num">binary</span><br/>
 <span class="in2"></span>};<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">read</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -156,7 +156,7 @@ Open file for reading and match with input
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">needed by algorithm</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">&lt;iostream&gt;</span><br/>
 <span class="macro">@end(<span class="name">needed by algorithm</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -168,7 +168,7 @@ Needs input stream
 <span class="macro">@def(<span class="name">read</span>)</span><br/>
 <span class="in1"></span><span class="keyword">for</span> (;;) {<br/>
 <span class="in2"></span><span class="var">i</span> = <span class="type">std</span>::<span class="var">cin</span>.<span class="fn">get</span>();<br/>
-<span class="in2"></span><span class="var">r</span> = <span class="keyword">in</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span><span class="var">r</span> = <span class="var">in</span>.<span class="fn">get</span>();<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">i</span> != <span class="var">r</span> || <span class="var">i</span> == <span class="num">EOF</span>) {<br/>
 <span class="in3"></span><span class="keyword">break</span>;<br/>
 <span class="in2"></span>}<br/>
@@ -186,7 +186,7 @@ Or the end is reached by one stream
 <code>
 <span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">i</span> == <span class="num">EOF</span> &amp;&amp; <span class="var">r</span> == <span class="num">EOF</span>) {<br/>
-<span class="in2"></span><span class="keyword">return</span> <span class="var">EXIT_FAILURE</span>;<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="num">EXIT_FAILURE</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
 </code></div>
@@ -201,12 +201,12 @@ If both files are done then the file do not need to change
 <span class="in2"></span><span class="type">std</span>::<span class="var">fstream</span> <span class="var">out</span> {<br/>
 <span class="in3"></span><span class="var">path</span>.<span class="fn">c_str</span>(),<br/>
 <span class="in3"></span><span class="var">p</span> ?<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span> |<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="keyword">in</span> |<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">out</span><br/>
+<span class="in4"></span><span class="type">std</span>::<span class="type">ios_base</span>::<span class="num">binary</span> |<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="type">ios_base</span>::<span class="num">in</span> |<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="type">ios_base</span>::<span class="num">out</span><br/>
 <span class="in3"></span>:<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span> |<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">out</span><br/>
+<span class="in4"></span><span class="type">std</span>::<span class="type">ios_base</span>::<span class="num">binary</span> |<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="type">ios_base</span>::<span class="num">out</span><br/>
 <span class="in2"></span>};<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">write</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -215,7 +215,7 @@ If both files are done then the file do not need to change
 <ul><li>
 Open output and write changed part
 </li><li>
-File will not be created when <code><span class="type">std</span>::<span class="var">ios_base</span>::<span class="keyword">in</span></code> is specified
+File will not be created when <code><span class="type">std</span>::<span class="type">ios_base</span>::<span class="num">in</span></code> is specified
 </li><li>
 So it will be specified only if there is some data to sweep over
 </li><li>
@@ -249,8 +249,8 @@ Write everything that is coming from <code><span class="type">std</span>::<span 
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">needed by algorithm</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">unistd</span>.<span class="var">h</span>&gt;<br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">sys</span>/<span class="var">types</span>.<span class="var">h</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">&lt;unistd.h&gt;</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> <span class="str">&lt;sys/types.h&gt;</span><br/>
 <span class="macro">@end(<span class="name">needed by algorithm</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -270,7 +270,7 @@ Truncate file to new length
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
-<span class="in1"></span><span class="keyword">return</span> <span class="var">EXIT_SUCCESS</span>;<br/>
+<span class="in1"></span><span class="keyword">return</span> <span class="num">EXIT_SUCCESS</span>;<br/>
 <span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -320,6 +320,7 @@ Return success
 <span class="macro">@def(<span class="name">write description</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"usage: "</span> &lt;&lt; <span class="var">argv</span>[<span class="num">0</span>] &lt;&lt;<br/>
 <span class="in2"></span><span class="str">" [-?|--help|--] file_name\n"</span>;<br/>
+<span class="in1"></span><span class="keyword">return</span> <span class="num">EXIT_FAILURE</span>;<br/>
 <span class="macro">@end(<span class="name">write description</span>)</span><br/>
 </code></div>
 </div>

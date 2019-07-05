@@ -22,7 +22,7 @@
 
 ```
 @def(needed by main)
-	#include <string>
+	#include @s(<string>)
 @end(needed by main)
 ```
 * Needs declaration of `std::string`
@@ -75,7 +75,7 @@
 
 ```
 @def(needed by algorithm)
-	#include <fstream>
+	#include @s(<fstream>)
 @end(needed by algorithm)
 ```
 * Needs file stream
@@ -83,9 +83,9 @@
 ```
 @add(algorithm)
 	{
-		std::ifstream in {
+		std::ifstream @v(in) {
 			path.c_str(),
-			std::ios_base::binary
+			std::@t(ios_base)::@n(binary)
 		};
 		@put(read);
 	}
@@ -95,7 +95,7 @@
 
 ```
 @add(needed by algorithm)
-	#include <iostream>
+	#include @s(<iostream>)
 @end(needed by algorithm)
 ```
 * Needs input stream
@@ -104,7 +104,7 @@
 @def(read)
 	for (;;) {
 		i = std::cin.get();
-		r = in.get();
+		r = @v(in).get();
 		if (i != r || i == EOF) {
 			break;
 		}
@@ -118,7 +118,7 @@
 ```
 @add(algorithm)
 	if (i == EOF && r == EOF) {
-		return EXIT_FAILURE;
+		return @n(EXIT_FAILURE);
 	}
 @end(algorithm)
 ```
@@ -130,19 +130,19 @@
 		std::fstream out {
 			path.c_str(),
 			p ?
-				std::ios_base::binary |
-					std::ios_base::in |
-					std::ios_base::out
+				std::@t(ios_base)::@n(binary) |
+					std::@t(ios_base)::@n(in) |
+					std::@t(ios_base)::@n(out)
 			:
-				std::ios_base::binary |
-					std::ios_base::out
+				std::@t(ios_base)::@n(binary) |
+					std::@t(ios_base)::@n(out)
 		};
 		@put(write);
 	}
 @end(algorithm)
 ```
 * Open output and write changed part
-* File will not be created when `std::ios_base::in` is specified
+* File will not be created when `std::@t(ios_base)::@n(in)` is specified
 * So it will be specified only if there is some data to sweep over
 * Otherwise it will be replaced with zeros
 
@@ -166,8 +166,8 @@
 
 ```
 @add(needed by algorithm)
-	#include <unistd.h>
-	#include <sys/types.h>
+	#include @s(<unistd.h>)
+	#include @s(<sys/types.h>)
 @end(needed by algorithm)
 ```
 * Includes for `truncate`
@@ -181,7 +181,7 @@
 
 ```
 @add(algorithm)
-	return EXIT_SUCCESS;
+	return @n(EXIT_SUCCESS);
 @end(algorithm)
 ```
 * Return success
@@ -220,6 +220,7 @@
 @def(write description)
 	std::cout << "usage: " << argv[0] <<
 		" [-?|--help|--] file_name\n";
+	return @n(EXIT_FAILURE);
 @end(write description)
 ```
 
