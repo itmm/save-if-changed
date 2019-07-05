@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Save if Changed</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Save if Changed</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Save if Changed</h1>
+</div>
+<ul><li>
+A small tool that saves the standard input to a file
+</li><li>
+But only if it will change the content of this file
+</li><li>
+This allows to change the modification date only if a modification  actually happened
+</li><li>
+And can improve build performance
+</li></ul>
+</div>
+</div>
+<h2>Main structure</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Main structure</h2>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">| c++ -x c++ -Wall -o sic -</span>)</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">needed by main</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="fn">main</span>(<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">argc</span>, <span class="type">const</span> <span class="type">char</span> *<span class="var">argv</span>[]<br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">main</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">| c++ -x c++ -Wall -o sic -</span>)</span><br/>
+</code></div>
+<ul><li>
+Directly pipe the generated file to the C++ compiler
+</li><li>
+The file consists of global elements
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">needed by main</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="type">string</span>&gt;<br/>
+<span class="macro">@end(<span class="name">needed by main</span>)</span><br/>
+</code></div>
+<ul><li>
+Needs declaration of <code><span class="type">std</span>::<span class="type">string</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">path</span> { <span class="str">"a.out"</span> };<br/>
+<span class="macro">@end(<span class="name">main</span>)</span><br/>
+</code></div>
+<ul><li>
+Name of the output file can be changed with command line argument
+</li><li>
+If not specified, a default value will be used
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">parse arguments</span>)</span>;<br/>
+<span class="macro">@end(<span class="name">main</span>)</span><br/>
+</code></div>
+<ul><li>
+Arguments will be parsed later
+</li><li>
+The business logic is coming first
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">algorithm</span>)</span>;<br/>
+<span class="macro">@end(<span class="name">main</span>)</span><br/>
+</code></div>
+<ul><li>
+Perform algorithm after command line arguments are parsed
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">needed by main</span>)</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">needed by algorithm</span>)</span><br/>
+<span class="macro">@end(<span class="name">needed by main</span>)</span><br/>
+</code></div>
+</div>
+</div>
+<h2>The Algorithm</h2>
+<div class="slides">
+<div>
+<div>
+<h2>The Algorithm</h2>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">algorithm</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">i</span>, <span class="var">r</span>;<br/>
+<span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+<code><span class="var">i</span></code> is the character read from <code><span class="type">std</span>::<span class="var">cin</span></code>
+</li><li>
+<code><span class="var">r</span></code> is the reference read from the file
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
+<span class="in1"></span><span class="type">long</span> <span class="var">p</span> = <span class="num">0</span>;<br/>
+<span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+<code><span class="var">p</span></code> is the current position in a file
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">needed by algorithm</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">fstream</span>&gt;<br/>
+<span class="macro">@end(<span class="name">needed by algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+Needs file stream
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
+<span class="in1"></span>{<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">ifstream</span> <span class="keyword">in</span> {<br/>
+<span class="in3"></span><span class="var">path</span>.<span class="fn">c_str</span>(),<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span><br/>
+<span class="in2"></span>};<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">read</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+Open file for reading and match with input
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">needed by algorithm</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
+<span class="macro">@end(<span class="name">needed by algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+Needs input stream
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">read</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (;;) {<br/>
+<span class="in2"></span><span class="var">i</span> = <span class="type">std</span>::<span class="var">cin</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span><span class="var">r</span> = <span class="keyword">in</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">i</span> != <span class="var">r</span> || <span class="var">i</span> == <span class="num">EOF</span>) {<br/>
+<span class="in3"></span><span class="keyword">break</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span>++<span class="var">p</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">read</span>)</span><br/>
+</code></div>
+<ul><li>
+Continue until chars do not match
+</li><li>
+Or the end is reached by one stream
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">i</span> == <span class="num">EOF</span> &amp;&amp; <span class="var">r</span> == <span class="num">EOF</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">EXIT_FAILURE</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+If both files are done then the file do not need to change
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
+<span class="in1"></span>{<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">fstream</span> <span class="var">out</span> {<br/>
+<span class="in3"></span><span class="var">path</span>.<span class="fn">c_str</span>(),<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">binary</span> |<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="keyword">in</span> |<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">ios_base</span>::<span class="var">out</span><br/>
+<span class="in2"></span>};<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">write</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+Open output and write changed part
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">write</span>)</span><br/>
+<span class="in1"></span><span class="var">out</span>.<span class="fn">seekp</span>(<span class="var">p</span>);<br/>
+<span class="macro">@end(<span class="name">write</span>)</span><br/>
+</code></div>
+<ul><li>
+Seek to the position where change happens
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">write</span>)</span><br/>
+<span class="in1"></span><span class="keyword">while</span> (<span class="var">i</span> != <span class="num">EOF</span>) {<br/>
+<span class="in2"></span><span class="var">out</span>.<span class="fn">put</span>(<span class="var">i</span>);<br/>
+<span class="in2"></span><span class="var">i</span> = <span class="type">std</span>::<span class="var">cin</span>.<span class="fn">get</span>();<br/>
+<span class="in2"></span>++<span class="var">p</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">write</span>)</span><br/>
+</code></div>
+<ul><li>
+Write everything that is coming from <code><span class="type">std</span>::<span class="var">cin</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">needed by algorithm</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">unistd</span>.<span class="var">h</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">sys</span>/<span class="var">types</span>.<span class="var">h</span>&gt;<br/>
+<span class="macro">@end(<span class="name">needed by algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+Includes for <code><span class="var">truncate</span></code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
+<span class="in1"></span><span class="fn">truncate</span>(<span class="var">path</span>.<span class="fn">c_str</span>(), <span class="var">p</span>);<br/>
+<span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+Truncate file to new length
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">algorithm</span>)</span><br/>
+<span class="in1"></span><span class="keyword">return</span> <span class="var">EXIT_SUCCESS</span>;<br/>
+<span class="macro">@end(<span class="name">algorithm</span>)</span><br/>
+</code></div>
+<ul><li>
+Return success
+</li></ul>
+</div>
+</body>
+</html>
