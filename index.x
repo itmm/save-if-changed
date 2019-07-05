@@ -8,14 +8,14 @@
 ## Main structure
 
 ```
-@Def(| c++ -x c++ -Wall -o sic -)
+@Def(file: sic.cpp)
 	@put(needed by main)
 	int main(
 		int argc, const char *argv[]
 	) {
 		@put(main);
 	}
-@End(| c++ -x c++ -Wall -o sic -)
+@End(file: sic.cpp)
 ```
 * Directly pipe the generated file to the C++ compiler
 * The file consists of global elements

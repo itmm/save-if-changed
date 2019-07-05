@@ -1,5 +1,7 @@
 .PHONY: tests clean
 
+CXXFLAGS += -Wall
+
 tests: sic
 	@echo TST prepare
 	@rm -f a.out
@@ -22,7 +24,11 @@ tests: sic
 	@diff ls-1.txt ls-2.txt
 	@rm ls-1.txt ls-2.txt
 
-sic: index.x
+sic: sic.cpp
+	@echo C++ $^
+	@$(CXX) $(CXXFLAGS) $^ -o $@
+
+sic.cpp: index.x
 	@echo HX
 	@hx
 
