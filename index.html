@@ -28,6 +28,9 @@ And can improve build performance
 <div>
 <h2>Main structure</h2>
 </div>
+<ul><li>
+Layout the main structure of the program
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -104,6 +107,9 @@ Perform algorithm after command line arguments are parsed
 <div>
 <h2>The Algorithm</h2>
 </div>
+<ul><li>
+Implement the main algorithm
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -284,6 +290,9 @@ Return success
 <div>
 <h2>Parse arguments</h2>
 </div>
+<ul><li>
+Handle command line argument parsing
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -299,6 +308,13 @@ Return success
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">parse arguments</span>)</span><br/>
 </code></div>
+<ul><li>
+Iterate through each argument
+</li><li>
+If it starts with a <code>-</code> and options should be parsed, it will treated  as an option
+</li><li>
+Otherwise it will be used as the file path
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -307,6 +323,17 @@ Return success
 <span class="in2"></span><span class="var">parse_opts</span> = <span class="num">false</span>;<br/>
 <span class="in2"></span><span class="keyword">continue</span>;<br/>
 <span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">parse option</span>)</span><br/>
+</code></div>
+<ul><li>
+If the option is <code>--</code> no more arguments will be treated as an option
+</li><li>
+This allows file paths to start with <code>-</code>
+</li></ul>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">parse option</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">arg</span> != <span class="str">"-?"</span> &amp;&amp; <span class="var">arg</span> != <span class="str">"--help"</span>) {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"unknown option "</span> &lt;&lt;<br/>
 <span class="in3"></span><span class="var">arg</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
@@ -314,6 +341,9 @@ Return success
 <span class="in1"></span><span class="macro">@put(<span class="name">write description</span>)</span><br/>
 <span class="macro">@end(<span class="name">parse option</span>)</span><br/>
 </code></div>
+<ul><li>
+If the option is not known, an error message will be printed in  addition to the usage
+</li></ul>
 </div>
 <div><div>
 <code>
@@ -323,6 +353,9 @@ Return success
 <span class="in1"></span><span class="keyword">return</span> <span class="num">EXIT_FAILURE</span>;<br/>
 <span class="macro">@end(<span class="name">write description</span>)</span><br/>
 </code></div>
+<ul><li>
+Print the usage
+</li></ul>
 </div>
 </body>
 </html>

@@ -27,6 +27,7 @@
 		parse_opts = false;
 		continue;
 	}
+
 	if (arg != "-?" && arg != "--help") {
 		std::cerr << "unknown option " <<
 			arg << "\n";

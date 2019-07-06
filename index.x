@@ -6,6 +6,7 @@
 * And can improve build performance
 
 ## Main structure
+* Layout the main structure of the program
 
 ```
 @Def(file: sic.cpp)
@@ -57,6 +58,7 @@
 ```
 
 ## The Algorithm
+* Implement the main algorithm
 
 ```
 @def(algorithm)
@@ -187,6 +189,7 @@
 * Return success
 
 ## Parse arguments
+* Handle command line argument parsing
 
 ```
 @def(parse arguments)
@@ -201,6 +204,10 @@
 	}
 @end(parse arguments)
 ```
+* Iterate through each argument
+* If it starts with a `-` and options should be parsed, it will treated
+  as an option
+* Otherwise it will be used as the file path
 
 ```
 @def(parse option)
@@ -208,6 +215,13 @@
 		parse_opts = false;
 		continue;
 	}
+@end(parse option)
+```
+* If the option is `--` no more arguments will be treated as an option
+* This allows file paths to start with `-`
+
+```
+@add(parse option)
 	if (arg != "-?" && arg != "--help") {
 		std::cerr << "unknown option " <<
 			arg << "\n";
@@ -215,6 +229,8 @@
 	@put(write description)
 @end(parse option)
 ```
+* If the option is not known, an error message will be printed in
+  addition to the usage
 
 ```
 @def(write description)
@@ -223,4 +239,5 @@
 	return @n(EXIT_FAILURE);
 @end(write description)
 ```
+* Print the usage
 
